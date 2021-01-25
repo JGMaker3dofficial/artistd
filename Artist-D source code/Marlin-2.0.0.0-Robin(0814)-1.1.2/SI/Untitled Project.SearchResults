@@ -1,0 +1,7 @@
+---- NO_EEPROM_SELECTED Matches (1 in 1 files) ----
+pins_MKS_ROBIN_PRO.h (src\pins\stm32) line 42 : 
+
+//#if EITHER(NO_EEPROM_SELECTED, I2C_EEPROM)
+  #define I2C_EEPROM                              // EEPROM on I2C-0
+  #define MARLIN_EEPROM_SIZE 0x1000               // 4KB
+  #define E2END 0xFFF                             // 4KB
