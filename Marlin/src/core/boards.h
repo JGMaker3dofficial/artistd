@@ -278,10 +278,8 @@
 #define BOARD_FYSETC_CHEETAH          4016  // FYSETC Cheetah
 #define BOARD_FYSETC_CHEETAH_V12      4017  // FYSETC Cheetah V1.2
 #define BOARD_LONGER3D_LK             4018  // Alfawise U20/U20+/U30 (Longer3D LK1/2) / STM32F103VET6
-#define BOARD_GTM32_MINI              4019  // STM32F103VET6 controller
-#define BOARD_GTM32_MINI_A30          4020  // STM32F103VET6 controller
-#define BOARD_GTM32_REV_B             4021  // STM32F103VET6 controller
-
+#define BOARD_MKS_ROBIN_PRO           4019  // MKS Robin Pro (STM32F103ZET6)
+#define BOARD_MKS_ROBIN_LITE3         4020  // MKS Robin Lite/Lite2 (STM32F103RCT6)
 //
 // ARM Cortex-M4F
 //

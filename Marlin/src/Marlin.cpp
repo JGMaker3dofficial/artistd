@@ -181,6 +181,10 @@
   #include "libs/L6470/L6470_Marlin.h"
 #endif
 
+#if ENABLED(SPI_EEPROM)
+  #include "../../module/W25Qxx.h"
+#endif
+
 const char NUL_STR[] PROGMEM = "",
            G28_STR[] PROGMEM = "G28",
            M21_STR[] PROGMEM = "M21",
@@ -943,6 +947,9 @@ void setup() {
 
   // Load data from EEPROM if available (or use defaults)
   // This also updates variables in the planner, elsewhere
+  #if ENABLED(SPI_EEPROM)
+    W25QXX.init(SPI_QUARTER_SPEED);
+  #endif
   settings.first_load();
 
   #if ENABLED(TOUCH_BUTTONS)

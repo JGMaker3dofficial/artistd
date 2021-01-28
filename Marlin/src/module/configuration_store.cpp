@@ -114,6 +114,10 @@
   #include "../feature/tmc_util.h"
 #endif
 
+#if ENABLED(SPI_EEPROM)
+  #include "../../module/W25Qxx.h"
+#endif
+
 #pragma pack(push, 1) // No padding between variables
 
 typedef struct { uint16_t X, Y, Z, X2, Y2, Z2, Z3, E0, E1, E2, E3, E4, E5; } tmc_stepper_current_t;
@@ -494,6 +498,12 @@ void MarlinSettings::postprocess() {
    * M500 - Store Configuration
    */
   bool MarlinSettings::save() {
+
+    #if ENABLED(SPI_EEPROM)
+      W25QXX.init(SPI_QUARTER_SPEED);
+    #endif
+    W25QXX.SPI_FLASH_SectorErase(0);
+
     float dummy = 0;
     char ver[4] = "ERR";
 
@@ -505,7 +515,8 @@ void MarlinSettings::postprocess() {
     #if ENABLED(FLASH_EEPROM_EMULATION)
       EEPROM_SKIP(ver);   // Flash doesn't allow rewriting without erase
     #else
-      EEPROM_WRITE(ver);  // invalidate data first
+      //EEPROM_WRITE(ver);  // invalidate data first
+      EEPROM_SKIP(ver);
     #endif
     EEPROM_SKIP(working_crc); // Skip the checksum slot
 
@@ -1251,6 +1262,10 @@ void MarlinSettings::postprocess() {
       DEBUG_ECHOLNPAIR("Settings Stored (", eeprom_size, " bytes; crc ", (uint32_t)final_crc, ")");
 
       eeprom_error |= size_error(eeprom_size);
+    }
+    else {
+      eeprom_index = EEPROM_OFFSET;
+      EEPROM_WRITE(ver);
     }
     EEPROM_FINISH();
 
