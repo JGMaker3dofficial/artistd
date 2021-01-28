@@ -463,12 +463,16 @@
   #include "stm32/pins_CHITU3D.h"               // STM32F1                                env:STM32F103RE
 #elif MB(MKS_ROBIN)
   #include "stm32/pins_MKS_ROBIN.h"             // STM32F1                                env:mks_robin
+#elif MB(MKS_ROBIN_PRO)
+    #include "stm32/pins_MKS_ROBIN_PRO.h"         // STM32F1                                env:mks_robin
 #elif MB(MKS_ROBIN_MINI)
   #include "stm32/pins_MKS_ROBIN_MINI.h"        // STM32F1                                env:mks_robin_mini
 #elif MB(MKS_ROBIN_NANO)
   #include "stm32/pins_MKS_ROBIN_NANO.h"        // STM32F1                                env:mks_robin_nano
 #elif MB(MKS_ROBIN_LITE)
   #include "stm32/pins_MKS_ROBIN_LITE.h"        // STM32F1                                env:mks_robin_lite
+#elif MB(MKS_ROBIN_LITE3)
+    #include "stm32/pins_MKS_ROBIN_LITE3.h"     // STM32F1                                env:mks_robin_lite
 #elif MB(BIGTREE_SKR_MINI_V1_1)
   #include "stm32/pins_BIGTREE_SKR_MINI_V1_1.h" // STM32F1                                env:STM32F103RC_bigtree
 #elif MB(BTT_SKR_MINI_E3_V1_2)

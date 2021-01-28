@@ -30,6 +30,9 @@
 #if ENABLED(SPI_EEPROM)
 
 #include "../HAL.h"
+#if ENABLED(SPI_EEPROM)
+  #include "../../module/W25Qxx.h"
+#endif
 
 #define CMD_WREN  6   // WREN
 #define CMD_READ  2   // WRITE
@@ -37,6 +40,11 @@
 
 uint8_t eeprom_read_byte(uint8_t* pos) {
   uint8_t v;
+
+  #if 1
+  W25QXX.SPI_FLASH_BufferRead((uint8_t *)&v,(uint32_t)pos,1);
+  return v;
+  #else
   uint8_t eeprom_temp[3];
 
   // set read location
@@ -51,9 +59,13 @@ uint8_t eeprom_read_byte(uint8_t* pos) {
   v = spiRec(SPI_CHAN_EEPROM1);
   WRITE(SPI_EEPROM1_CS, HIGH);
   return v;
+  #endif
 }
 
 void eeprom_read_block(void* dest, const void* eeprom_address, size_t n) {
+  #if 1
+  W25QXX.SPI_FLASH_BufferRead((uint8_t *)dest,*((uint32_t *)eeprom_address),n);
+  #else
   uint8_t eeprom_temp[3];
 
   // set read location
@@ -69,9 +81,13 @@ void eeprom_read_block(void* dest, const void* eeprom_address, size_t n) {
   while (n--)
     *p_dest++ = spiRec(SPI_CHAN_EEPROM1);
   WRITE(SPI_EEPROM1_CS, HIGH);
+  #endif
 }
 
 void eeprom_write_byte(uint8_t* pos, uint8_t value) {
+  #if 1
+  W25QXX.SPI_FLASH_BufferWrite((uint8_t *)&value,(uint32_t)pos,1);
+  #else
   uint8_t eeprom_temp[3];
 
   /*write enable*/
@@ -91,9 +107,13 @@ void eeprom_write_byte(uint8_t* pos, uint8_t value) {
   spiSend(SPI_CHAN_EEPROM1, value);
   WRITE(SPI_EEPROM1_CS, HIGH);
   delay(7);   // wait for page write to complete
+  #endif
 }
 
 void eeprom_update_block(const void* src, void* eeprom_address, size_t n) {
+  #if 1
+  W25QXX.SPI_FLASH_BufferWrite((uint8_t *)src,*((uint32_t *)eeprom_address),n);
+  #else
   uint8_t eeprom_temp[3];
 
   /*write enable*/
@@ -113,6 +133,7 @@ void eeprom_update_block(const void* src, void* eeprom_address, size_t n) {
   spiSend(SPI_CHAN_EEPROM1, (const uint8_t*)src, n);
   WRITE(SPI_EEPROM1_CS, HIGH);
   delay(7);   // wait for page write to complete
+  #endif
 }
 
 #endif // SPI_EEPROM
