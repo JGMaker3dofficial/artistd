@@ -26,18 +26,20 @@
   #include "../feature/leds/leds.h"
 #endif
 
+#if ENABLED(HOST_ACTION_COMMANDS)
+  #include "../feature/host_actions.h"
+#endif
+
+#include "ultralcd.h"
+MarlinUI ui;
+
 // All displays share the MarlinUI class
 #if HAS_DISPLAY
   #include "../gcode/queue.h"
-  #include "ultralcd.h"
   #include "fontutils.h"
-  MarlinUI ui;
   #include "../sd/cardreader.h"
   #if ENABLED(EXTENSIBLE_UI)
     #define START_OF_UTF8_CHAR(C) (((C) & 0xC0u) != 0x80u)
-  #endif
-  #if ENABLED(HOST_ACTION_COMMANDS)
-    #include "../feature/host_actions.h"
   #endif
 #endif
 
@@ -182,6 +184,7 @@ millis_t MarlinUI::next_button_update_ms; // = 0
   #endif
 
   screenFunc_t MarlinUI::currentScreen; // Initialized in CTOR
+  bool MarlinUI::screen_changed;
 
   #if ENABLED(ENCODER_RATE_MULTIPLIER)
     bool MarlinUI::encoderRateMultiplierEnabled;
@@ -1368,6 +1371,10 @@ void MarlinUI::update() {
   void MarlinUI::set_status(const char * const message, const bool persist) {
     if (alert_level) return;
 
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_action_notify(message);
+    #endif
+
     // Here we have a problem. The message is encoded in UTF8, so
     // arbitrarily cutting it will be a problem. We MUST be sure
     // that there is no cutting in the middle of a multibyte character!
@@ -1406,6 +1413,10 @@ void MarlinUI::update() {
     if (level < 0) level = alert_level = 0;
     if (level < alert_level) return;
     alert_level = level;
+
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_action_notify(message);
+    #endif
 
     // Since the message is encoded in UTF8 it must
     // only be cut on a character boundary.
@@ -1567,4 +1578,34 @@ void MarlinUI::update() {
 
   #endif
 
-#endif // HAS_DISPLAY
+#else // !HAS_DISPLAY
+
+  //
+  // Send the status line as a host notification
+  //
+
+  void MarlinUI::set_status(const char * const message, const bool) {
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_action_notify(message);
+    #else
+      UNUSED(message);
+    #endif
+  }
+
+  void MarlinUI::set_status_P(PGM_P message, const int8_t) {
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_action_notify(message);
+    #else
+      UNUSED(message);
+    #endif
+  }
+
+  void MarlinUI::status_printf_P(const uint8_t, PGM_P const message, ...) {
+    #if ENABLED(HOST_PROMPT_SUPPORT)
+      host_action_notify(message);
+    #else
+      UNUSED(message);
+    #endif
+  }
+
+#endif // !HAS_DISPLAY
