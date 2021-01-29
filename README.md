@@ -3,9 +3,10 @@
 
 
 # Curent Status
-There is a new Branch, this branch https://github.com/JGMaker3dofficial/artistd/tree/Artist-D_MarlinOverlay is an overlay of the Artist-D customization over the 2.0.X Bugfix Marlin that the Artist-D was based from.   Building this repo (I havn't done it yet) should result in an Identical firmware to the current JGMaker Release.   
-This branch contains all the history from the original marlin source.  However, due to some limitations from github having the "Forked from" metadata isn't possible right now.  Nor will it probably be. 
+The main branch has the 1.1.2 Version of the JGMaker Artist-D firmware.  It has be realigned with the original Marlin Source
 
+## Goal
+The current goal is to get this next version of the firmware based on the 2.0 releas of marlin instead of the bugfix version.
 ## Getting the Upstram Marlin
 There are some instructions here for setting your repository with the upstream Marlin Source. 
 https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork
