@@ -238,13 +238,16 @@
   #define FSMC_CS_PIN        PD7    // NE4
   #define FSMC_RS_PIN        PD11   // A0
 
-  #define LCD_RESET_PIN      PF6
+  #define LCD_RESET_PIN      PC6
   #define NO_LCD_REINIT             // Suppress LCD re-initialization
 
   #define LCD_BACKLIGHT_PIN  PD13
 
   #if ENABLED(TOUCH_BUTTONS)
     #define TOUCH_CS_PIN     PA7
+	#define TOUCH_SCK_PIN    PB13
+    #define TOUCH_MOSI_PIN   PB15
+    #define TOUCH_MISO_PIN   PB14
   #else
     #define BEEPER_PIN       PC5
     #define BTN_ENC          PG2
