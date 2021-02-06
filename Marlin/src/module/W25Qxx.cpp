@@ -17,7 +17,7 @@
  *
  */
 #include "../inc/MarlinConfig.h"
-#include "../Marlin.h"
+#include "../MarlinCore.h"
 #if ENABLED(SPI_FLASH)
 #include <SPI.h>
 
