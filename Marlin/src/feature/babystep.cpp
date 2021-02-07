@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -44,17 +44,9 @@ int16_t Babystep::accum;
 void Babystep::step_axis(const AxisEnum axis) {
   const int16_t curTodo = steps[BS_TODO_AXIS(axis)]; // get rid of volatile for performance
   if (curTodo) {
-    stepper.babystep((AxisEnum)axis, curTodo > 0);
+    stepper.do_babystep((AxisEnum)axis, curTodo > 0);
     if (curTodo > 0) steps[BS_TODO_AXIS(axis)]--; else steps[BS_TODO_AXIS(axis)]++;
   }
-}
-
-void Babystep::task() {
-  #if EITHER(BABYSTEP_XY, I2C_POSITION_ENCODERS)
-    LOOP_XYZ(axis) step_axis((AxisEnum)axis);
-  #else
-    step_axis(Z_AXIS);
-  #endif
 }
 
 void Babystep::add_mm(const AxisEnum axis, const float &mm) {
@@ -78,7 +70,7 @@ void Babystep::add_steps(const AxisEnum axis, const int16_t distance) {
   #endif
 
   #if ENABLED(BABYSTEP_ALWAYS_AVAILABLE)
-    #define BSA_ENABLE(AXIS) do{ switch (AXIS) { case X_AXIS: enable_X(); break; case Y_AXIS: enable_Y(); break; case Z_AXIS: enable_Z(); break; default: break; } }while(0)
+    #define BSA_ENABLE(AXIS) do{ switch (AXIS) { case X_AXIS: ENABLE_AXIS_X(); break; case Y_AXIS: ENABLE_AXIS_Y(); break; case Z_AXIS: ENABLE_AXIS_Z(); break; default: break; } }while(0)
   #else
     #define BSA_ENABLE(AXIS) NOOP
   #endif
@@ -124,6 +116,10 @@ void Babystep::add_steps(const AxisEnum axis, const int16_t distance) {
   #endif
   #if ENABLED(BABYSTEP_ALWAYS_AVAILABLE)
     gcode.reset_stepper_timeout();
+  #endif
+
+  #if ENABLED(INTEGRATED_BABYSTEPPING)
+    if (has_steps()) stepper.initiateBabystepping();
   #endif
 }
 

@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -45,7 +45,7 @@ void GcodeSuite::G60() {
   }
 
   stored_position[slot] = current_position;
-  SBI(saved_slots, slot);
+  SBI(saved_slots[slot >> 3], slot & 0x07);
 
   #if ENABLED(SAVED_POSITIONS_DEBUG)
     const xyze_pos_t &pos = stored_position[slot];

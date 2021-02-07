@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -25,7 +25,7 @@
 #if SAVED_POSITIONS
 
 #include "../../../core/language.h"
-#include "../../module/planner.h"
+#include "../../../module/planner.h"
 #include "../../gcode.h"
 #include "../../../module/motion.h"
 
@@ -48,7 +48,7 @@ void GcodeSuite::G61(void) {
   #endif
 
   // No saved position? No axes being restored?
-  if (!TEST(saved_slots, slot) || !parser.seen("XYZ")) return;
+  if (!TEST(saved_slots[slot >> 3], slot & 0x07) || !parser.seen("XYZ")) return;
 
   // Apply any given feedrate over 0.0
   const float fr = parser.linearval('F');
