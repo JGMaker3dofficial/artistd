@@ -38,7 +38,14 @@
 //
 #define DISABLE_DEBUG
 
-//
+//#define  SDCARD_EEPROM_EMULATION
+
+#define SPI_EEPROM
+#define SPI_CHAN_EEPROM1                        2
+#define SPI_EEPROM1_CS                          PB12 
+#define MARLIN_EEPROM_SIZE 						0x1000   // 4KB
+#define E2END 									0xFFF
+
 // Note: MKS Robin board is using SPI2 interface.
 //
 //#define SPI_MODULE 2
@@ -103,6 +110,16 @@
 #ifndef E2_CS_PIN
   #define E2_CS_PIN                         PG9
 #endif
+
+//SPI FLASH
+#define SPI_FLASH
+#if ENABLED(SPI_FLASH)
+	#define 	W25QXX_CS_PIN		  	PB12
+	#define 	W25QXX_MOSI_PIN			PB15
+	#define 	W25QXX_MISO_PIN			PB14
+	#define 	W25QXX_SCK_PIN			PB13
+#endif
+
 //
 // Software SPI pins for TMC2130 stepper drivers
 //
@@ -185,7 +202,7 @@
 #define POWER_LOSS_PIN                      PA2   // PW_DET
 #define PS_ON_PIN                           PG11  // PW_OFF
 #define FIL_RUNOUT_PIN                      PA4   // MT_DET1
-//#define FIL_RUNOUT_PIN                    PE6   // MT_DET2
+#define FIL_RUNOUT2_PIN                     PE6   // MT_DET2
 //#define FIL_RUNOUT_PIN                    PG14  // MT_DET3
 
 //
@@ -194,6 +211,8 @@
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION              ONBOARD
 #endif
+
+#define ONBOARD_SD_CS_PIN                   P0_06   // Chip select for "System" SD card
 
 #if SD_CONNECTION_IS(LCD)
   #define ENABLE_SPI2
@@ -204,6 +223,7 @@
   #define SS_PIN                            PG6
 #elif SD_CONNECTION_IS(ONBOARD)
   #define SDIO_SUPPORT
+  #define ONBOARD_SD_CS                     PC11
   #define SD_DETECT_PIN                     PD12
 #elif SD_CONNECTION_IS(CUSTOM_CABLE)
   #error "No custom SD drive cable defined for this board."
@@ -218,13 +238,16 @@
   #define FSMC_CS_PIN                       PD7   // NE4
   #define FSMC_RS_PIN                       PD11  // A0
 
-  #define LCD_RESET_PIN                     PF6
+  #define LCD_RESET_PIN                     PC6
   #define NO_LCD_REINIT                           // Suppress LCD re-initialization
 
   #define LCD_BACKLIGHT_PIN                 PD13
 
   #if ENABLED(TOUCH_BUTTONS)
     #define TOUCH_CS_PIN                    PA7
+	#define TOUCH_SCK_PIN                   PB13
+    #define TOUCH_MOSI_PIN                  PB15
+    #define TOUCH_MISO_PIN                  PB14
   #else
     #define BEEPER_PIN                      PC5
     #define BTN_ENC                         PG2
@@ -264,11 +287,11 @@
 #endif
 
 #ifndef ST7920_DELAY_1
-  #define ST7920_DELAY_1           DELAY_NS(125)
+  #define ST7920_DELAY_1 DELAY_NS(750)  //DELAY_NS(125) CTM
 #endif
 #ifndef ST7920_DELAY_2
-  #define ST7920_DELAY_2           DELAY_NS(125)
+  #define ST7920_DELAY_2 DELAY_NS(750)  //DELAY_NS(125) CTM 
 #endif
 #ifndef ST7920_DELAY_3
-  #define ST7920_DELAY_3           DELAY_NS(125)
+  #define ST7920_DELAY_3 DELAY_NS(750)  //DELAY_NS(125) CTM
 #endif
