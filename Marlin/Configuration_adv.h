@@ -2308,14 +2308,6 @@
    */
   //#define SENSORLESS_HOMING // StallGuard capable drivers only
 
-  /**
-   * Use StallGuard2 to probe the bed with the nozzle.
-   *
-   * CAUTION: This could cause damage to machines that use a lead screw or threaded rod
-   *          to move the Z axis. Take extreme care when attempting to enable this feature.
-   */
-  //#define SENSORLESS_PROBING // StallGuard capable drivers only
-
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
     #define X_STALL_SENSITIVITY  8
@@ -2997,7 +2989,7 @@
   #define MAX7219_LOAD_PIN  44
 
   //#define MAX7219_GCODE          // Add the M7219 G-code to control the LED matrix
-  #define MAX7219_INIT_TEST    2   // Do a test pattern at initialization (Set to 2 for spiral)
+  #define MAX7219_INIT_TEST    2   // Test pattern at startup: 0=none, 1=sweep, 2=spiral
   #define MAX7219_NUMBER_UNITS 1   // Number of Max7219 units in chain.
   #define MAX7219_ROTATE       0   // Rotate the display clockwise (in multiples of +/- 90°)
                                    // connector at:  right=0   bottom=-90  top=90  left=180

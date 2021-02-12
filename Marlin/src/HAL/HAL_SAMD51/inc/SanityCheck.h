@@ -23,6 +23,10 @@
  * Test SAMD51 specific configuration values for errors at compile-time.
  */
 
+#if ENABLED(EEPROM_SETTINGS) && NONE(SPI_EEPROM, I2C_EEPROM)
+  #warning "Did you activate the SmartEEPROM? See https://github.com/GMagician/SAMD51-SmartEEprom-Manager/releases"
+#endif
+
 #if defined(ADAFRUIT_GRAND_CENTRAL_M4) && SD_CONNECTION_IS(CUSTOM_CABLE)
   #error "No custom SD drive cable defined for this board."
 #endif
@@ -48,9 +52,5 @@
 #endif
 
 #if HAS_TMC_SW_SERIAL
-  #error "TMC220x Software Serial is not supported on this platform."
-#endif
-
-#if TMC_HAS_SW_SERIAL
   #error "TMC220x Software Serial is not supported on this platform."
 #endif

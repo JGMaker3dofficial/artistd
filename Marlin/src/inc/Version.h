@@ -25,7 +25,7 @@
  * Release version. Leave the Marlin version or apply a custom scheme.
  */
 #ifndef SHORT_BUILD_VERSION
-  #define SHORT_BUILD_VERSION "2.0.4.4"
+  #define SHORT_BUILD_VERSION "2021.1-2.0.4.4.5005"
 #endif
 
 /**
@@ -42,7 +42,7 @@
  * version was tagged.
  */
 #ifndef STRING_DISTRIBUTION_DATE
-  #define STRING_DISTRIBUTION_DATE "2020-03-04"
+  #define STRING_DISTRIBUTION_DATE "2020-03-08"
 #endif
 
 /**
@@ -97,7 +97,7 @@
    * documentation about a specific Marlin release. Displayed in the Info Menu.
    */
 #ifndef WEBSITE_URL
-  #define WEBSITE_URL "http://marlinfw.org"
+  #define WEBSITE_URL "https://jgmaker3dofficial.com/"
 #endif
 
 /**
