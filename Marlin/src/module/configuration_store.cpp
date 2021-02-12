@@ -123,7 +123,7 @@
 #endif
 
 #if ENABLED(SPI_EEPROM)
-  #include "../../module/W25Qxx.h"
+  #include "../../libs/W25Qxx.h"
 #endif
 
 #pragma pack(push, 1) // No padding between variables

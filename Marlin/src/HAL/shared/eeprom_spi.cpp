@@ -31,7 +31,7 @@
 
 #include "../HAL.h"
 #if ENABLED(SPI_EEPROM)
-  #include "../../module/W25Qxx.h"
+  #include "../../libs/W25Qxx.h"
 #endif
 
 #define CMD_WREN  6   // WREN

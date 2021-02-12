@@ -271,8 +271,8 @@
     #define LCD_RESET_PIN  -1
     #define DOGLCD_A0      PF12
     #define DOGLCD_CS      PF15
-    //#define DOGLCD_SCK     PB13
-    //#define DOGLCD_MOSI    PB15
+    #define DOGLCD_SCK     PB13
+    #define DOGLCD_MOSI    PB15
 
   #else // !MKS_MINI_12864 && !ENDER2_STOCKDISPLAY
 

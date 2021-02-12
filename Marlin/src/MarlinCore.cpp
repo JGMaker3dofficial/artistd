@@ -182,7 +182,7 @@
 #endif
 
 #if ENABLED(SPI_EEPROM)
-  #include "../../module/W25Qxx.h"
+  #include "libs/W25Qxx.h"
 #endif
 
 const char NUL_STR[] PROGMEM = "",
