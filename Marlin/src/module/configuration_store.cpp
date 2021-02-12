@@ -542,7 +542,11 @@ void MarlinSettings::postprocess() {
     eeprom_error = false;
 
     // Write or Skip version. (Flash doesn't allow rewrite without erase.)
-    TERN(FLASH_EEPROM_EMULATION, EEPROM_SKIP, EEPROM_WRITE)(ver);
+    #if ENABLED(SPI_EEPROM)
+      EEPROM_SKIP(ver); //Artist-D
+    #else
+      TERN(FLASH_EEPROM_EMULATION, EEPROM_SKIP, EEPROM_WRITE)(ver);
+    #endif
 
     EEPROM_SKIP(working_crc); // Skip the checksum slot
 
