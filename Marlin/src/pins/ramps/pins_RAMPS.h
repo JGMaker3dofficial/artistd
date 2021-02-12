@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -169,9 +169,9 @@
 
 // SPI for Max6675 or Max31855 Thermocouple
 #if DISABLED(SDSUPPORT)
-  #define MAX6675_SS_PIN   66   // Don't use 53 if there is even the remote possibility of using Display/SD card
+  #define MAX6675_SS_PIN   66   // Don't use 53 if using Display/SD card
 #else
-  #define MAX6675_SS_PIN   66   // Don't use 49 as this is tied to the switch inside the SD card socket to detect if there is an SD card present
+  #define MAX6675_SS_PIN   66   // Don't use 49 (SD_DETECT_PIN)
 #endif
 
 //
@@ -389,6 +389,24 @@
   #endif
   #ifndef E4_SERIAL_RX_PIN
     #define E4_SERIAL_RX_PIN -1
+  #endif
+  #ifndef E5_SERIAL_TX_PIN
+    #define E5_SERIAL_TX_PIN -1
+  #endif
+  #ifndef E5_SERIAL_RX_PIN
+    #define E5_SERIAL_RX_PIN -1
+  #endif
+  #ifndef E6_SERIAL_TX_PIN
+    #define E6_SERIAL_TX_PIN -1
+  #endif
+  #ifndef E6_SERIAL_RX_PIN
+    #define E6_SERIAL_RX_PIN -1
+  #endif
+  #ifndef E7_SERIAL_TX_PIN
+    #define E7_SERIAL_TX_PIN -1
+  #endif
+  #ifndef E7_SERIAL_RX_PIN
+    #define E7_SERIAL_RX_PIN -1
   #endif
 #endif
 
@@ -629,7 +647,7 @@
           #define NEOPIXEL_PIN    25
         #endif
 
-    #endif
+      #endif
 
     #elif ENABLED(MINIPANEL)
 
@@ -667,14 +685,7 @@
       #define BEEPER_PIN        33
 
       // Buttons are directly attached to AUX-2
-      #if ENABLED(REPRAPWORLD_KEYPAD)
-        #define SHIFT_OUT       40
-        #define SHIFT_CLK       44
-        #define SHIFT_LD        42
-        #define BTN_EN1         64
-        #define BTN_EN2         59
-        #define BTN_ENC         63
-      #elif ENABLED(PANEL_ONE)
+      #if ENABLED(PANEL_ONE)
         #define BTN_EN1         59   // AUX2 PIN 3
         #define BTN_EN2         63   // AUX2 PIN 4
         #define BTN_ENC         49   // AUX3 PIN 7
@@ -693,3 +704,18 @@
   #endif // NEWPANEL
 
 #endif // HAS_SPI_LCD
+
+#if ENABLED(REPRAPWORLD_KEYPAD)
+  #define SHIFT_OUT        40
+  #define SHIFT_CLK        44
+  #define SHIFT_LD         42
+  #ifndef BTN_EN1
+    #define BTN_EN1        64
+  #endif
+  #ifndef BTN_EN2
+    #define BTN_EN2        59
+  #endif
+  #ifndef BTN_ENC
+    #define BTN_ENC        63
+  #endif
+#endif
