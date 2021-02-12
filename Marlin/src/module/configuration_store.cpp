@@ -71,7 +71,7 @@
 #endif
 
 #if ENABLED(EXTENSIBLE_UI)
-  #include "../lcd/extensible_ui/ui_api.h"
+  #include "../lcd/extui/ui_api.h"
 #endif
 
 #if HAS_SERVOS
@@ -87,7 +87,7 @@
 #include "../feature/fwretract.h"
 
 #if ENABLED(POWER_LOSS_RECOVERY)
-  #include "../feature/power_loss_recovery.h"
+  #include "../feature/powerloss.h"
 #endif
 
 #include "../feature/pause.h"
@@ -119,7 +119,7 @@
 #endif
 
 #if ENABLED(PROBE_TEMP_COMPENSATION)
-  #include "../feature/probe_temp_compensation.h"
+  #include "../feature/probe_temp_comp.h"
 #endif
 
 #if ENABLED(SPI_EEPROM)
@@ -593,7 +593,7 @@ void MarlinSettings::postprocess() {
 
       #if HAS_HOTEND_OFFSET
         // Skip hotend 0 which must be 0
-        for (uint8_t e = 1; e < HOTENDS; e++)
+        LOOP_S_L_N(e, 1, HOTENDS)
           EEPROM_WRITE(hotend_offset[e]);
       #endif
     }
@@ -1434,7 +1434,7 @@ void MarlinSettings::postprocess() {
       {
         #if HAS_HOTEND_OFFSET
           // Skip hotend 0 which must be 0
-          for (uint8_t e = 1; e < HOTENDS; e++)
+          LOOP_S_L_N(e, 1, HOTENDS)
             EEPROM_READ(hotend_offset[e]);
         #endif
       }
@@ -2929,7 +2929,7 @@ void MarlinSettings::reset() {
     #if HAS_HOTEND_OFFSET
       CONFIG_ECHO_HEADING("Hotend offsets:");
       CONFIG_ECHO_START();
-      for (uint8_t e = 1; e < HOTENDS; e++) {
+      LOOP_S_L_N(e, 1, HOTENDS) {
         SERIAL_ECHOPAIR_P(
           PSTR("  M218 T"), (int)e,
           SP_X_STR, LINEAR_UNIT(hotend_offset[e].x),

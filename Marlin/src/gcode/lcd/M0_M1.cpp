@@ -34,7 +34,7 @@
 #endif
 
 #if ENABLED(EXTENSIBLE_UI)
-  #include "../../lcd/extensible_ui/ui_api.h"
+  #include "../../lcd/extui/ui_api.h"
 #endif
 
 #if HAS_LEDS_OFF_FLAG
@@ -56,15 +56,16 @@ void GcodeSuite::M0_M1() {
 
   planner.synchronize();
 
+  const bool seenQ = parser.seen('Q');
   #if HAS_LEDS_OFF_FLAG
-    if (parser.seen('Q')) printerEventLEDs.onPrintCompleted();      // Change LED color for Print Completed
+    if (seenQ) printerEventLEDs.onPrintCompleted();      // Change LED color for Print Completed
   #endif
 
   #if HAS_LCD_MENU
 
     if (parser.string_arg)
       ui.set_status(parser.string_arg, true);
-    else {
+    else if (!seenQ) {
       LCD_MESSAGEPGM(MSG_USERWAIT);
       #if ENABLED(LCD_PROGRESS_BAR) && PROGRESS_MSG_EXPIRE > 0
         ui.reset_progress_bar_timeout();
@@ -102,7 +103,7 @@ void GcodeSuite::M0_M1() {
   #endif
 
   #if HAS_LCD_MENU
-    ui.reset_status();
+    if (!seenQ) ui.reset_status();
   #endif
 
   wait_for_user = false;

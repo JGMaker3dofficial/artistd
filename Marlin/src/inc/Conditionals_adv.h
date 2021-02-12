@@ -83,6 +83,10 @@
   #endif
 #endif
 
+#if ANY(FWRETRACT, HAS_LEVELING, SKEW_CORRECTION)
+  #define HAS_POSITION_MODIFIERS 1
+#endif
+
 #if ANY(X_DUAL_ENDSTOPS, Y_DUAL_ENDSTOPS, Z_MULTI_ENDSTOPS)
   #define HAS_EXTRA_ENDSTOPS 1
 #endif
@@ -98,10 +102,6 @@
 #endif
 #if ALL(HAS_RESUME_CONTINUE, PRINTER_EVENT_LEDS, SDSUPPORT)
   #define HAS_LEDS_OFF_FLAG 1
-#endif
-
-#if !NUM_SERIAL
-  #undef BAUD_RATE_GCODE
 #endif
 
 // Multiple Z steppers
