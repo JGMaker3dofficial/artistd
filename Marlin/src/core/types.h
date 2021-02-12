@@ -24,7 +24,7 @@
 #include <math.h>
 #include <stddef.h>
 
-#include "millis_t.h"
+#include "../inc/MarlinConfigPre.h"
 
 class __FlashStringHelper;
 typedef const __FlashStringHelper *progmem_str;
@@ -483,3 +483,4 @@ struct XYZEval {
 #undef FI
 
 const xyze_char_t axis_codes { 'X', 'Y', 'Z', 'E' };
+#define XYZ_CHAR(A) ('X' + char(A))
