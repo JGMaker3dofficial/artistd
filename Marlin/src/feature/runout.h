@@ -297,7 +297,15 @@ class FilamentSensorBase {
       }
 
       static inline void filament_present(const uint8_t extruder) {
-        runout_mm_countdown[extruder] = runout_distance_mm;
+        #ifdef FILAMENT_RUNOUT_FROM_Z_OFFSET
+          #ifdef FILAMENT_RUNOUT_LENGTH_FROM_SENSOR
+            runout_mm_countdown[extruder] = (Z_MAX_POS - planner.get_axis_position_mm(Z_AXIS) + FILAMENT_RUNOUT_LENGTH_FROM_SENSOR) - FILAMENT_RUNOUT_DISTANCE_MM;
+          #else
+            runout_mm_countdown[extruder] = (Z_MAX_POS - planner.get_axis_position_mm(Z_AXIS)) - FILAMENT_RUNOUT_DISTANCE_MM;
+          #endif
+        #else
+          runout_mm_countdown[extruder] = runout_distance_mm;
+        #endif
       }
 
       static inline void block_completed(const block_t* const b) {
