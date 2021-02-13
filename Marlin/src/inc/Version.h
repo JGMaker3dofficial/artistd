@@ -25,7 +25,7 @@
  * Release version. Leave the Marlin version or apply a custom scheme.
  */
 #ifndef SHORT_BUILD_VERSION
-  #define SHORT_BUILD_VERSION "2021.2.1-2.0.5.4"
+  #define SHORT_BUILD_VERSION "2021.2-beta"
 #endif
 
 /**
@@ -42,7 +42,7 @@
  * version was tagged.
  */
 #ifndef STRING_DISTRIBUTION_DATE
-  #define STRING_DISTRIBUTION_DATE "2020-07-09"
+  #define STRING_DISTRIBUTION_DATE "2021-02-12"
 #endif
 
 /**
@@ -89,7 +89,7 @@
  * Default generic printer UUID.
  */
 #ifndef DEFAULT_MACHINE_UUID
-  #define DEFAULT_MACHINE_UUID "cede2a2f-41a2-4748-9b12-c55c62f367ff"
+  #define DEFAULT_MACHINE_UUID "acf235dc-6da3-11eb-9439-0242ac130002"
 #endif
 
   /**
