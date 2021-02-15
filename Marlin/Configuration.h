@@ -407,7 +407,7 @@
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
 #define TEMP_SENSOR_0 1
-#define TEMP_SENSOR_1 1  // 热敏电阻  
+#define TEMP_SENSOR_1 1  // 热敏电阻
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
 #define TEMP_SENSOR_4 0
@@ -1064,9 +1064,9 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true  
+#define INVERT_E0_DIR true
 #define INVERT_E1_DIR false
-#define INVERT_E2_DIR false    
+#define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
 #define INVERT_E4_DIR false
 #define INVERT_E5_DIR false
@@ -1156,13 +1156,33 @@
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  #define FILAMENT_RUNOUT_DISTANCE_MM 100
+  #define FILAMENT_RUNOUT_DISTANCE_MM 90
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     // Enable this option to use an encoder disc that toggles the runout pin
     // as the filament moves. (Be sure to set FILAMENT_RUNOUT_DISTANCE_MM
     // large enough to avoid false positives.)
     //#define FILAMENT_MOTION_SENSOR
+
+    /**
+     * Dynamically allocates a runout distance of filament based on the current z position.
+     * Useful for direct-drive extruders where the length of filament varries over the height of
+     * the print and the filament sensor is affixed to the top of the printer.
+     * This modifies FILAMENT_RUNOUT_DISTANCE_MM to be the distance from the nozzle to the point
+     * where the filament enters the extruder.
+     * Use this value along with FILAMENT_RUNOUT_OFFSET_BUFFER to create a safe runout distance
+     * based on the remaining filament in the path to the nozzle.
+     */
+    #define FILAMENT_RUNOUT_FROM_Z_OFFSET
+
+    #ifdef FILAMENT_RUNOUT_FROM_Z_OFFSET
+      /**
+       * An additional amount from the sensor to the highest z-axis point of the extruder.
+       * When used with direct drive extruder this is the distance from the input of the
+       * extruder to the filament sensor when the extruder is at the highest printable z-height.
+       */
+      #define FILAMENT_RUNOUT_LENGTH_FROM_SENSOR 80
+    #endif
   #endif
 #endif
 
@@ -1322,7 +1342,7 @@
 #endif
 
 // Add a menu item to move between bed corners for manual bed adjustment
-#define LEVEL_BED_CORNERS  
+#define LEVEL_BED_CORNERS
 
 #if ENABLED(LEVEL_BED_CORNERS)
   #define LEVEL_CORNERS_INSET_LFRB { 40, 40, 40, 40 } // (mm) Left, Front, Right, Back insets
