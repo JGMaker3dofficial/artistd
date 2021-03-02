@@ -21,3 +21,5 @@ https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/co
 $ git remote add upstream https://github.com/MarlinFirmware/Configurations.git
 
 Thie will set an upstream remote that you can fetch and merge from. 
+
+https://sparks.gogo.co.nz/ch340.html
