@@ -96,12 +96,12 @@
 #define SDMMC_MAX_VOLT_TRIAL                 0x00000FFFU
 #define SDIO_CARD_TRANSFER                   0x00000004U    /* Card is in transfer state */
 #define SDIO_CARD_ERROR                      0x000000FFU    /* Card response Error */
-#define SDIO_CMDTIMEOUT                      200U           /* Command send and response timeout */
-#define SDIO_DATA_TIMEOUT                    100U           /* Read data transfer timeout */
-#define SDIO_WRITE_TIMEOUT                   200U           /* Write data transfer timeout */
+#define SDIO_CMDTIMEOUT                      300U //JGMaker           /* Command send and response timeout */
+#define SDIO_DATA_TIMEOUT                    200U //JGMaker           /* Read data transfer timeout */
+#define SDIO_WRITE_TIMEOUT                   300U //JGMaker           /* Write data transfer timeout */
 
 #ifndef SDIO_CLOCK
-  #define SDIO_CLOCK                         18000000       /* 18 MHz */
+  #define SDIO_CLOCK                         4500000        /* 18 MHz */  //JGMaker
 #endif
 
 #ifndef SDIO_READ_RETRIES

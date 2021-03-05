@@ -130,6 +130,10 @@
   #include "../feature/probe_temp_comp.h"
 #endif
 
+#if ENABLED(SPI_EEPROM)
+  #include "../../libs/W25Qxx.h"
+#endif
+
 #include "../feature/controllerfan.h"
 #if ENABLED(CONTROLLER_FAN_EDITABLE)
   void M710_report(const bool forReplay);
@@ -547,6 +551,12 @@ void MarlinSettings::postprocess() {
    * M500 - Store Configuration
    */
   bool MarlinSettings::save() {
+
+    #if ENABLED(SPI_EEPROM)
+      W25QXX.init(SPI_QUARTER_SPEED);
+    #endif
+    W25QXX.SPI_FLASH_SectorErase(0);
+
     float dummyf = 0;
     char ver[4] = "ERR";
 
@@ -557,7 +567,11 @@ void MarlinSettings::postprocess() {
     eeprom_error = false;
 
     // Write or Skip version. (Flash doesn't allow rewrite without erase.)
-    TERN(FLASH_EEPROM_EMULATION, EEPROM_SKIP, EEPROM_WRITE)(ver);
+    #if ENABLED(SPI_EEPROM)
+      EEPROM_SKIP(ver); //Artist-D
+    #else
+      TERN(FLASH_EEPROM_EMULATION, EEPROM_SKIP, EEPROM_WRITE)(ver);
+    #endif
 
     EEPROM_SKIP(working_crc); // Skip the checksum slot
 

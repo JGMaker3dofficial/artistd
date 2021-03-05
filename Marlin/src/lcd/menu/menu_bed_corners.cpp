@@ -60,13 +60,17 @@ static inline void _lcd_goto_next_corner() {
                      rb { (X_MAX_BED) - lfrb[2], (Y_MAX_BED) - lfrb[3] };
   line_to_z(LEVEL_CORNERS_Z_HOP);
   switch (bed_corner) {
-    case 0: current_position   = lf;   break; // copy xy
-    case 1: current_position.x = rb.x; break;
-    case 2: current_position.y = rb.y; break;
-    case 3: current_position.x = lf.x; break;
+/**
+ * JGMaker Level Center First
+ */
     #if ENABLED(LEVEL_CENTER_TOO)
-      case 4: current_position.set(X_CENTER, Y_CENTER); break;
+      case 0: current_position.set(X_CENTER, Y_CENTER); break;
     #endif
+    case 1: current_position   = lf;   break; // copy xy
+    case 2: current_position.x = rb.x; break;
+    case 3: current_position.y = rb.y; break;
+    case 4: current_position.x = lf.x; break;
+
   }
   line_to_current_position(manual_feedrate_mm_s.x);
   line_to_z(LEVEL_CORNERS_HEIGHT);

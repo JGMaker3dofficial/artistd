@@ -208,6 +208,10 @@
   #include "libs/L64XX/L64XX_Marlin.h"
 #endif
 
+#if ENABLED(SPI_EEPROM)
+  #include "libs/W25Qxx.h"
+#endif
+
 PGMSTR(NUL_STR, "");
 PGMSTR(M112_KILL_STR, "M112 Shutdown");
 PGMSTR(G28_STR, "G28");
@@ -1005,6 +1009,13 @@ void setup() {
 
   SETUP_RUN(settings.first_load());   // Load data from EEPROM if available (or use defaults)
                                       // This also updates variables in the planner, elsewhere
+
+  // Load data from EEPROM if available (or use defaults)
+  // This also updates variables in the planner, elsewhere
+  #if ENABLED(SPI_EEPROM)
+    W25QXX.init(SPI_QUARTER_SPEED);
+  #endif
+  settings.first_load();
 
   #if ENABLED(TOUCH_BUTTONS)
     SETUP_RUN(touch.init());
