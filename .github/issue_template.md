@@ -1,11 +1,21 @@
-# NO SUPPORT REQUESTS PLEASE
+<!--
+Do you want to ask a question? Are you looking for support? Please don't post here. 
+-->
+### Description
 
-Do you want to ask a question? Are you looking for support? Please don't post here. Support Requests posted here will be automatically closed!
+<!-- Description of the bug or requested feature -->
 
-Instead use one of the following options:
+### Steps to Reproduce
 
-- The Marlin Firmware forum at https://reprap.org/forum/list.php?415
-- The MarlinFirmware Facebook Group at https://www.facebook.com/groups/1049718498464482/
-- The MarlinFirmware Discord Server at https://discord.gg/n5NJ59y.
+<!-- If this is a Bug Report, please describe the steps needed to reproduce the issue -->
 
-Before filing an issue be sure to test the latest "bugfix" branch to see whether the issue is already addressed.
+1. [First Step]
+2. [Second Step]
+3. [and so on...]
+
+**Expected behavior:** [What you expect to happen]
+
+**Actual behavior:** [What actually happens]
+
+#### Additional Information
+
