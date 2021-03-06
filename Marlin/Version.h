@@ -28,7 +28,7 @@
 /**
  * Marlin release version identifier
  */
-#define SHORT_BUILD_VERSION "2021.3-2.0.6-Twinkie"
+#define SHORT_BUILD_VERSION "2021.3-2.0.6"
 
 /**
  * Verbose version identifier which should contain a reference to the location
