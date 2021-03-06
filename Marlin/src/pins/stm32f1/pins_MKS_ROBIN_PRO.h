@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -212,8 +212,6 @@
   #define SDCARD_CONNECTION              ONBOARD
 #endif
 
-#define ONBOARD_SD_CS_PIN                   P0_06   // Chip select for "System" SD card
-
 #if SD_CONNECTION_IS(LCD)
   #define ENABLE_SPI2
   #define SD_DETECT_PIN                     PG3
@@ -223,7 +221,7 @@
   #define SS_PIN                            PG6
 #elif SD_CONNECTION_IS(ONBOARD)
   #define SDIO_SUPPORT
-  #define ONBOARD_SD_CS                     PC11
+  #define ONBOARD_SD_CS_PIN                 PC11
   #define SD_DETECT_PIN                     PD12
 #elif SD_CONNECTION_IS(CUSTOM_CABLE)
   #error "No custom SD drive cable defined for this board."
@@ -286,12 +284,12 @@
   #endif // !MKS_MINI_12864 && !ENDER2_STOCKDISPLAY
 #endif
 
-#ifndef ST7920_DELAY_1
-  #define ST7920_DELAY_1 DELAY_NS(750)  //DELAY_NS(125) CTM
+#ifndef BOARD_ST7920_DELAY_1
+  #define BOARD_ST7920_DELAY_1     DELAY_NS(750)  //DELAY_NS(125) CTM
 #endif
-#ifndef ST7920_DELAY_2
-  #define ST7920_DELAY_2 DELAY_NS(750)  //DELAY_NS(125) CTM 
+#ifndef BOARD_ST7920_DELAY_2
+  #define BOARD_ST7920_DELAY_2     DELAY_NS(750)  //DELAY_NS(125) CTM 
 #endif
-#ifndef ST7920_DELAY_3
-  #define ST7920_DELAY_3 DELAY_NS(750)  //DELAY_NS(125) CTM
+#ifndef BOARD_ST7920_DELAY_3
+  #define BOARD_ST7920_DELAY_3     DELAY_NS(750)  //DELAY_NS(125) CTM
 #endif

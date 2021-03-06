@@ -1,6 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ *
+ * Based on Sprinter and grbl.
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #include "../inc/MarlinConfig.h"
@@ -37,8 +40,8 @@
   #define SPI_FLASH_CS_PIN   W25QXX_CS_PIN
 #endif
 
-#define W25QXX_CS_H	OUT_WRITE(SPI_FLASH_CS_PIN, HIGH)
-#define W25QXX_CS_L	OUT_WRITE(SPI_FLASH_CS_PIN, LOW)
+#define W25QXX_CS_H OUT_WRITE(SPI_FLASH_CS_PIN, HIGH)
+#define W25QXX_CS_L OUT_WRITE(SPI_FLASH_CS_PIN, LOW)
 
 ext_FLASH W25QXX;
 
@@ -110,9 +113,8 @@ void ext_FLASH::spi_flash_Read(uint8_t* buf, uint16_t nbyte) {
  *
  * @details
  */
-void ext_FLASH::spi_flash_Send(uint8_t b) {
-  SPI.send(b);
-}
+void ext_FLASH::spi_flash_Send(uint8_t b) { SPI.send(b); }
+
 /**
  * @brief  Write token and then write from 512 byte buffer to SPI (for SD card)
  *
@@ -157,8 +159,7 @@ void ext_FLASH::SPI_FLASH_WriteEnable(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void ext_FLASH::SPI_FLASH_WaitForWriteEnd(void)
-{
+void ext_FLASH::SPI_FLASH_WaitForWriteEnd(void) {
   uint8_t FLASH_Status = 0;
 
   /* Select the FLASH: Chip Select low */
@@ -168,26 +169,22 @@ void ext_FLASH::SPI_FLASH_WaitForWriteEnd(void)
 
   /* Loop as long as the memory is busy with a write cycle */
   do
-  {
     /* Send a dummy byte to generate the clock needed by the FLASH
     and put the value of the status register in FLASH_Status variable */
     FLASH_Status = spi_flash_Rec();
-
-  }
   while ((FLASH_Status & WIP_Flag) == 0x01); /* Write in progress */
 
   /* Deselect the FLASH: Chip Select high */
   W25QXX_CS_H;
 }
 
-void ext_FLASH::SPI_FLASH_SectorErase(uint32_t SectorAddr)
-{
+void ext_FLASH::SPI_FLASH_SectorErase(uint32_t SectorAddr) {
   /* Send write enable instruction */
   SPI_FLASH_WriteEnable();
 
   /* Sector Erase */
   /* Select the FLASH: Chip Select low */
-	W25QXX_CS_L;
+  W25QXX_CS_L;
   /* Send Sector Erase instruction */
   spi_flash_Send(W25X_SectorErase);
   /* Send SectorAddr high nibble address byte */
