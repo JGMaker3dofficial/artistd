@@ -322,7 +322,6 @@
 #define BOARD_TRIGORILLA_PRO          4036  // Trigorilla Pro (STM32F103ZET6)
 #define BOARD_FLY_MINI                4037  // FLY MINI (STM32F103RCT6)
 
-
 //
 // ARM Cortex-M4F
 //

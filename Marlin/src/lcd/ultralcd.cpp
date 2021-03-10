@@ -1272,7 +1272,7 @@ void MarlinUI::update() {
 
     } // next_button_update_ms
 
-    #if HAS_ENCODER_WHEEL && DISABLED(TOUCH_BUTTONS)
+    #if HAS_ENCODER_WHEEL
       static uint8_t lastEncoderBits;
 
       #define encrot0 0

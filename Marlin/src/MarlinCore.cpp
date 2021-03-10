@@ -81,6 +81,10 @@
   #include "libs/BL24CXX.h"
 #endif
 
+#if ENABLED(SPI_EEPROM)
+  #include "libs/W25Qxx.h"
+#endif
+
 #if ENABLED(DIRECT_STEPPING)
   #include "feature/direct_stepping.h"
 #endif
@@ -215,10 +219,6 @@
 
 #if HAS_L64XX
   #include "libs/L64XX/L64XX_Marlin.h"
-#endif
-
-#if ENABLED(SPI_EEPROM)
-  #include "libs/W25Qxx.h"
 #endif
 
 #if ENABLED(PASSWORD_FEATURE)
@@ -1261,6 +1261,10 @@ void setup() {
     BL24CXX::init();
     const uint8_t err = BL24CXX::check();
     SERIAL_ECHO_TERNARY(err, "BL24CXX Check ", "failed", "succeeded", "!\n");
+  #endif
+
+  #if ENABLED(SPI_EEPROM)
+    W25QXX.init(SPI_QUARTER_SPEED);
   #endif
 
   #if ENABLED(DWIN_CREALITY_LCD)

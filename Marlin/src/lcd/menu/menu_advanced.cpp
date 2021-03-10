@@ -509,7 +509,7 @@ void menu_advanced_steps_per_mm() {
 
   #if ENABLED(DISTINCT_E_FACTORS)
     LOOP_L_N(n, E_STEPPERS)
-      EDIT_ITEM_FAST_N(float51, n, MSG_EN_STEPS, &planner.settings.axis_steps_per_mm[E_AXIS_N(n)], 5, 9999, []{ _planner_refresh_e_positioning(MenuItemBase::itemIndex); });
+      EDIT_ITEM_FAST_N(float42_52, n, MSG_EN_STEPS, &planner.settings.axis_steps_per_mm[E_AXIS_N(n)], 5, 9999, []{ _planner_refresh_e_positioning(MenuItemBase::itemIndex); });
   #elif E_STEPPERS
     EDIT_ITEM_FAST(float51, MSG_E_STEPS, &planner.settings.axis_steps_per_mm[E_AXIS], 5, 9999, []{ planner.refresh_positioning(); });
   #endif

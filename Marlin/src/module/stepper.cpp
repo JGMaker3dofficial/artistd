@@ -1757,7 +1757,6 @@ void Stepper::pulse_phase_isr() {
 
     #if DISABLED(LIN_ADVANCE)
       #if ENABLED(MIXING_EXTRUDER)
-
         if (delta_error.e >= 0) {
           delta_error.e -= advance_divisor;
           E_STEP_WRITE(mixer.get_stepper(), INVERT_E_STEP_PIN);

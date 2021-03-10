@@ -352,11 +352,6 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 59: G59(); break;                                    // G59.0 - G59.3: Switch to Workspace 6-9
       #endif
 
-      #if SAVED_POSITIONS
-        case 60: G60(); break;                                    // G60:  save current position
-        case 61: G61(); break;                                    // G61:  Apply/restore saved coordinates.
-      #endif
-
       #if ENABLED(PROBE_TEMP_COMPENSATION)
         case 76: G76(); break;                                    // G76: Calibrate first layer compensation values
       #endif

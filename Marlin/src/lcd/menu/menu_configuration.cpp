@@ -192,12 +192,12 @@ void menu_advanced_settings();
 
     GCODES_ITEM(MSG_IDEX_MODE_AUTOPARK,  PSTR("M605 S1\nG28 X\nG1 X100"));
     GCODES_ITEM(MSG_IDEX_MODE_DUPLICATE, need_g28
-      ? PSTR("M605 S1\nT0\nG28\nM605 S2 X155\nG28 X\nG1 X77.5")                // If Y or Z is not homed, do a full G28 first  CTM
-      : PSTR("M605 S1\nT0\nM605 S2 X155\nG28 X\nG1 X77.5")
+      ? PSTR("M605 S1\nT0\nG28\nM605 S2 X155\nG28 X\nG1 X77.5")               // If Y or Z is not homed, do a full G28 first  TwinkieXLII
+      : PSTR("M605 S1\nT0\nM605 S2 X155\nG28 X\nG1 X77.5") // TwinkieXLII
     );
     GCODES_ITEM(MSG_IDEX_MODE_MIRRORED_COPY, need_g28
-      ? PSTR("M605 S1\nT0\nG28\nM605 S2 X185\nG28 X\nG1 X62.5\nM605 S3 X200")  // If Y or Z is not homed, do a full G28 first  CTM
-      : PSTR("M605 S1\nT0\nM605 S2 X185\nG28 X\nG1 X62.5\nM605 S3 X200")
+      ? PSTR("M605 S1\nT0\nG28\nM605 S2 X185\nG28 X\nG1 X62.5\nM605 S3 X200")  // If Y or Z is not homed, do a full G28 first  TwinkieXLII
+      : PSTR("M605 S1\nT0\nM605 S2 X185\nG28 X\nG1 X62.5\nM605 S3 X200")  //TwinkieXLII
     );
     GCODES_ITEM(MSG_IDEX_MODE_FULL_CTRL, PSTR("M605 S0\nG28 X"));
     END_MENU();

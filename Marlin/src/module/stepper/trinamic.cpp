@@ -742,9 +742,6 @@ void reset_trinamic_drivers() {
   #if AXIS_IS_TMC(Z4)
     TMC_INIT(Z4, STEALTH_AXIS_Z);
   #endif
-  #if AXIS_IS_TMC(Z4)
-    _TMC_INIT(Z4, STEALTH_AXIS_Z);
-  #endif
   #if AXIS_IS_TMC(E0)
     TMC_INIT(E0, STEALTH_AXIS_E);
   #endif
@@ -768,12 +765,6 @@ void reset_trinamic_drivers() {
   #endif
   #if AXIS_IS_TMC(E7)
     TMC_INIT(E7, STEALTH_AXIS_E);
-  #endif
-  #if AXIS_IS_TMC(E6)
-    _TMC_INIT(E6, STEALTH_AXIS_E);
-  #endif
-  #if AXIS_IS_TMC(E7)
-    _TMC_INIT(E7, STEALTH_AXIS_E);
   #endif
 
   #if USE_SENSORLESS

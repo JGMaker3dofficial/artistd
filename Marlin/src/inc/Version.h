@@ -73,7 +73,7 @@
  * Define a generic printer name to be output to the LCD after booting Marlin.
  */
 #ifndef MACHINE_NAME
-  #define MACHINE_NAME "Artist-D"
+  #define MACHINE_NAME "3D Printer"
 #endif
 
 /**
@@ -82,14 +82,14 @@
  * providing the source code to your customers.)
  */
 #ifndef SOURCE_CODE_URL
-  #define SOURCE_CODE_URL "https://github.com/JGMaker3dofficial/artistd"
+  #define SOURCE_CODE_URL "https://github.com/MarlinFirmware/Marlin"
 #endif
 
 /**
  * Default generic printer UUID.
  */
 #ifndef DEFAULT_MACHINE_UUID
-  #define DEFAULT_MACHINE_UUID "acf235dc-6da3-11eb-9439-0242ac130002"
+  #define DEFAULT_MACHINE_UUID "cede2a2f-41a2-4748-9b12-c55c62f367ff"
 #endif
 
   /**
