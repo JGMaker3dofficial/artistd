@@ -25,7 +25,7 @@
  * Release version. Leave the Marlin version or apply a custom scheme.
  */
 #ifndef SHORT_BUILD_VERSION
-  #define SHORT_BUILD_VERSION "2.0.6"
+  #define SHORT_BUILD_VERSION "2.0.7.2"
 #endif
 
 /**
@@ -42,7 +42,7 @@
  * version was tagged.
  */
 #ifndef STRING_DISTRIBUTION_DATE
-  #define STRING_DISTRIBUTION_DATE "2020-07-27"
+  #define STRING_DISTRIBUTION_DATE "2020-10-15"
 #endif
 
 /**
@@ -52,7 +52,7 @@
  * to alert users to major changes.
  */
 
-#define MARLIN_HEX_VERSION 020006
+#define MARLIN_HEX_VERSION 020007
 #ifndef REQUIRED_CONFIGURATION_H_VERSION
   #define REQUIRED_CONFIGURATION_H_VERSION MARLIN_HEX_VERSION
 #endif
@@ -89,7 +89,7 @@
  * Default generic printer UUID.
  */
 #ifndef DEFAULT_MACHINE_UUID
-  #define DEFAULT_MACHINE_UUID "acf235dc-6da3-11eb-9439-0242ac130002"
+  #define DEFAULT_MACHINE_UUID "cede2a2f-41a2-4748-9b12-c55c62f367ff"
 #endif
 
   /**

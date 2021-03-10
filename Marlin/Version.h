@@ -26,22 +26,22 @@
 ////////////////////////////////////
 
 /**
- * Marlin release version identifier
+ * Marlin release version identifier //BASED on 2.0.7.2
  */
-#define SHORT_BUILD_VERSION "2021.3-2.0.6"
+#define SHORT_BUILD_VERSION "2021.4"
 
 /**
  * Verbose version identifier which should contain a reference to the location
  * from where the binary was downloaded or the source code was compiled.
  */
-#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "Twinkie"
+#define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION "JGMaker"
 
 /**
  * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
  * here we define this default string as the date where the latest release
  * version was tagged.
  */
-#define STRING_DISTRIBUTION_DATE "2021-03-05"
+#define STRING_DISTRIBUTION_DATE "2021-03-08"
 
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
@@ -65,7 +65,7 @@
  * The WEBSITE_URL is the location where users can get more information such as
  * documentation about a specific Marlin release.
  */
-#define WEBSITE_URL "https://jgmaker3dofficial.com/"
+#define WEBSITE_URL "https://jgmaker3d.com/"
 
 /**
  * Set the vendor info the serial USB interface, if changable

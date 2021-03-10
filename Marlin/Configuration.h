@@ -34,9 +34,8 @@
  * - Extra features
  *
  * Advanced settings can be found in Configuration_adv.h
- *
  */
-#define CONFIGURATION_H_VERSION 020006
+#define CONFIGURATION_H_VERSION 020007
 
 //===========================================================================
 //============================= Getting Started =============================
@@ -141,7 +140,7 @@
 // @section extruder
 
 // This defines the number of extruders
-// :[1, 2, 3, 4, 5, 6, 7, 8]
+// :[0, 1, 2, 3, 4, 5, 6, 7, 8]
 #define EXTRUDERS 2
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
@@ -330,7 +329,7 @@
 //#define PSU_NAME "Power Supply"
 
 #if ENABLED(PSU_CONTROL)
-  #define PSU_ACTIVE_HIGH false     // Set 'false' for ATX, 'true' for X-Box
+  #define PSU_ACTIVE_STATE LOW      // Set 'LOW' for ATX, 'HIGH' for X-Box
 
   //#define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
   //#define PSU_POWERUP_DELAY 250   // (ms) Delay for the PSU to warm up to full power
@@ -347,11 +346,10 @@
   #endif
 #endif
 
-// @section temperature
-
 //===========================================================================
 //============================= Thermal Settings ============================
 //===========================================================================
+// @section temperature
 
 /**
  * --NORMAL IS 4.7kohm PULLUP!-- 1kohm pullup can be used on hotend sensor, using correct resistor and table
@@ -390,6 +388,7 @@
  *    21 : Pt100 with circuit in the Ultimainboard V2.x with 3.3v excitation (STM32 \ LPC176x....)
  *    22 : 100k (hotend) with 4.7k pullup to 3.3V and 220R to analog input (as in GTM32 Pro vB)
  *    23 : 100k (bed) with 4.7k pullup to 3.3v and 220R to analog input (as in GTM32 Pro vB)
+ *    30 : Kis3d Silicone heating mat 200W/300W with 6mm precision cast plate (EN AW 5083) NTC100K / B3950 (4.7k pullup)
  *   201 : Pt100 with circuit in Overlord, similar to Ultimainboard V2.x
  *    60 : 100k Maker's Tool Works Kapton Bed Thermistor beta=3950
  *    61 : 100k Formbot / Vivedino 3950 350C thermistor 4.7k pullup
@@ -432,6 +431,12 @@
 #define DUMMY_THERMISTOR_998_VALUE 25
 #define DUMMY_THERMISTOR_999_VALUE 100
 
+// Resistor values when using a MAX31865 (sensor -5)
+// Sensor value is typically 100 (PT100) or 1000 (PT1000)
+// Calibration value is typically 430 ohm for AdaFruit PT100 modules and 4300 ohm for AdaFruit PT1000 modules.
+//#define MAX31865_SENSOR_OHMS      100
+//#define MAX31865_CALIBRATION_OHMS 430
+
 // Use temp sensor 1 as a redundant sensor with sensor 0. If the readings
 // from the two sensors differ too much the print will be aborted.
 //#define TEMP_SENSOR_1_AS_REDUNDANT
@@ -468,7 +473,7 @@
 #define HEATER_5_MAXTEMP 275
 #define HEATER_6_MAXTEMP 275
 #define HEATER_7_MAXTEMP 275
-#define BED_MAXTEMP      130 //JGMaker
+#define BED_MAXTEMP      130 //TwinkieXLII
 
 //===========================================================================
 //============================= PID Settings ================================
@@ -487,23 +492,17 @@
   #define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
                                   // Set/get with gcode: M301 E[extruder number, 0-2]
 
-  // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
-
-  // Ultimaker
-  #define DEFAULT_Kp 22.2
-  #define DEFAULT_Ki 1.08
-  #define DEFAULT_Kd 114
-
-  // MakerGear
-  //#define DEFAULT_Kp 7.0
-  //#define DEFAULT_Ki 0.1
-  //#define DEFAULT_Kd 12
-
-  // Mendel Parts V9 on 12V
-  //#define DEFAULT_Kp 63.0
-  //#define DEFAULT_Ki 2.25
-  //#define DEFAULT_Kd 440
-
+  #if ENABLED(PID_PARAMS_PER_HOTEND)
+    // Specify between 1 and HOTENDS values per array.
+    // If fewer than EXTRUDER values are provided, the last element will be repeated.
+    #define DEFAULT_Kp_LIST {  22.20,  22.20 }
+    #define DEFAULT_Ki_LIST {   1.08,   1.08 }
+    #define DEFAULT_Kd_LIST { 114.00, 114.00 }
+  #else
+    #define DEFAULT_Kp  22.20
+    #define DEFAULT_Ki   1.08
+    #define DEFAULT_Kd 114.00
+  #endif
 #endif // PIDTEMP
 
 //===========================================================================
@@ -539,17 +538,11 @@
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
+  // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
+  // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
   #define DEFAULT_bedKp 10.00
   #define DEFAULT_bedKi .023
   #define DEFAULT_bedKd 305.4
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from pidautotune
-  //#define DEFAULT_bedKp 97.1
-  //#define DEFAULT_bedKi 1.41
-  //#define DEFAULT_bedKd 1675.16
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
@@ -608,7 +601,7 @@
 
 // @section machine
 
-// Uncomment one of these options to enable CoreXY, CoreXZ, or CoreYZ kinematics
+// Enable one of the options below for CoreXY, CoreXZ, or CoreYZ kinematics,
 // either in the usual order or reversed
 //#define COREXY
 //#define COREXZ
@@ -616,6 +609,7 @@
 //#define COREYX
 //#define COREZX
 //#define COREZY
+//#define MARKFORGED_XY  // MarkForged. See https://reprap.org/forum/read.php?152,504042
 
 //===========================================================================
 //============================== Endstop Settings ===========================
@@ -629,7 +623,7 @@
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
 #define USE_ZMIN_PLUG
-#define USE_XMAX_PLUG //JGMaker
+#define USE_XMAX_PLUG //TwinkieXLII
 //#define USE_YMAX_PLUG
 //#define USE_ZMAX_PLUG
 
@@ -664,7 +658,7 @@
 #define Y_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
-#define Y_MAX_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.  //JGMaker  已确认正确
+#define Y_MAX_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.  //TwinkieXLII  已确认正确
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
 
@@ -684,16 +678,16 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'L6474', 'POWERSTEP01', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  TMC2208_STANDALONE //JGMaker
-#define Y_DRIVER_TYPE  TMC2208_STANDALONE //JGMaker
-#define Z_DRIVER_TYPE  TMC2208_STANDALONE //JGMaker
-#define X2_DRIVER_TYPE TMC2208_STANDALONE //JGMaker
+#define X_DRIVER_TYPE  TMC2208_STANDALONE //TwinkieXLII
+#define Y_DRIVER_TYPE  TMC2208_STANDALONE //TwinkieXLII
+#define Z_DRIVER_TYPE  TMC2208_STANDALONE //TwinkieXLII
+#define X2_DRIVER_TYPE TMC2208_STANDALONE //TwinkieXLII
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
 //#define Z3_DRIVER_TYPE A4988
 //#define Z4_DRIVER_TYPE A4988
-#define E0_DRIVER_TYPE A4988              //JGMaker
-#define E1_DRIVER_TYPE A4988              //JGMaker
+#define E0_DRIVER_TYPE A4988              //TwinkieXLII
+#define E1_DRIVER_TYPE A4988              //TwinkieXLII
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
@@ -740,21 +734,21 @@
  * following movement settings. If fewer factors are given than the
  * total number of extruders, the last value applies to the rest.
  */
-#define DISTINCT_E_FACTORS
+#define DISTINCT_E_FACTORS   //TwinkieXLII
 
 /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 98, 98 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 101, 101 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 } //{ 300, 300, 5, 25 }  JGMaker
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 10, 50 } //TwinkieXLII
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -767,11 +761,11 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 } //{ 500, 500, 100, 10000 }  JGMaker
+#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 } //{ 500, 500, 100, 10000 }  TwinkieXLII
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
-  #define MAX_ACCEL_EDIT_VALUES       { 500, 500, 100, 10000 } // ...or, set your own edit limits
+  #define MAX_ACCEL_EDIT_VALUES       { 3000, 3000, 100, 10000 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -866,7 +860,6 @@
  *    - For simple switches connect...
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
- *
  */
 //#define Z_MIN_PROBE_PIN 32 // Pin 32 is the RAMPS default
 
@@ -883,7 +876,7 @@
  * or (with LCD_BED_LEVELING) the LCD controller.
  */
 #define PROBE_MANUALLY
-//#define MANUAL_PROBE_START_Z 0.2
+#define MANUAL_PROBE_START_Z 0.2 //TwinkieXLII
 
 /**
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
@@ -1000,7 +993,7 @@
 #define PROBING_MARGIN 10
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_SPEED 8000
+#define XY_PROBE_SPEED (133*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1094,13 +1087,13 @@
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR false
-#define INVERT_Y_DIR false  //JGMaker
+#define INVERT_Y_DIR false  //TwinkieXLII
 #define INVERT_Z_DIR false
 
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true   //JGMaker
+#define INVERT_E0_DIR true   //TwinkieXLII
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -1133,12 +1126,12 @@
 #define Y_BED_SIZE 310   //JGMaker
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS -62.5  //JGMaker
+#define X_MIN_POS -62.5  //TwinkieXLII
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 350  // JGMaker 发现走不到350
+#define Z_MAX_POS 350  // TwinkieXLII 发现走不到350
 
 
 /**
@@ -1155,7 +1148,7 @@
 #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
   #define MIN_SOFTWARE_ENDSTOP_X
   #define MIN_SOFTWARE_ENDSTOP_Y
-  #define MIN_SOFTWARE_ENDSTOP_Z
+  //#define MIN_SOFTWARE_ENDSTOP_Z
 #endif
 
 // Max software endstops constrain movement within maximum coordinate bounds
@@ -1163,7 +1156,7 @@
 #if ENABLED(MAX_SOFTWARE_ENDSTOPS)
   #define MAX_SOFTWARE_ENDSTOP_X
   #define MAX_SOFTWARE_ENDSTOP_Y
-  #define MAX_SOFTWARE_ENDSTOP_Z
+  //#define MAX_SOFTWARE_ENDSTOP_Z
 #endif
 
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
@@ -1177,10 +1170,10 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-#define FILAMENT_RUNOUT_SENSOR   //JGMaker
+#define FILAMENT_RUNOUT_SENSOR   //TwinkieXLII
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   2     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-  #define FIL_RUNOUT_STATE     HIGH  // Pin state indicating that filament is NOT present.  //JGMaker
+  #define FIL_RUNOUT_STATE     HIGH  // Pin state indicating that filament is NOT present.  //TwinkieXLII
   #define FIL_RUNOUT_PULLUP          // Use internal pullup for filament runout pins.
   //#define FIL_RUNOUT_PULLDOWN      // Use internal pulldown for filament runout pins.
 
@@ -1239,7 +1232,7 @@
  *   leveling in steps so you can manually adjust the Z height at each grid-point.
  *   With an LCD controller the process is guided step-by-step.
  */
-// #define AUTO_BED_LEVELING_3POINT  //CTM
+//#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
@@ -1249,14 +1242,14 @@
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
-//#define RESTORE_LEVELING_AFTER_G28
+#define RESTORE_LEVELING_AFTER_G28  //TwinkitXLII
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-//#define DEBUG_LEVELING_FEATURE
+#define DEBUG_LEVELING_FEATURE
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL)
   // Gradually reduce leveling correction until a set height is reached,
@@ -1337,7 +1330,7 @@
   //===========================================================================
 
   #define MESH_INSET 10          // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 3    // Don't use more than 7 points per axis, implementation limited.
+  #define GRID_MAX_POINTS_X 4    // Don't use more than 7 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   //#define MESH_G28_REST_ORIGIN // After homing all axes ('G28' or 'G28 XYZ') rest Z at Z_MIN_POS
@@ -1348,12 +1341,12 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#define LCD_BED_LEVELING  //CTM
+#define LCD_BED_LEVELING  //TwinkieXLII
 
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
   #define LCD_PROBE_Z_RANGE 4     // (mm) Z Range centered on Z_MIN_POS for LCD Z adjustment
-  //#define MESH_EDIT_MENU        // Add a menu to edit mesh points
+  #define MESH_EDIT_MENU        // Add a menu to edit mesh points
 #endif
 
 // Add a menu item to move between bed corners for manual bed adjustment
@@ -1530,7 +1523,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-#define NOZZLE_PARK_FEATURE    //JGMaker
+#define NOZZLE_PARK_FEATURE    //TwinkieXLII
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
@@ -1578,7 +1571,6 @@
  *
  *   Caveats: The ending Z should be the same as starting Z.
  * Attention: EXPERIMENTAL. G-code arguments may change.
- *
  */
 //#define NOZZLE_CLEAN_FEATURE
 
@@ -1720,9 +1712,9 @@
 #define DISPLAY_CHARSET_HD44780 JAPANESE
 
 /**
- * Info Screen Style (0:Classic, 1:Prusa)
+ * Info Screen Style (0:Classic, 1:Průša)
  *
- * :[0:'Classic', 1:'Prusa']
+ * :[0:'Classic', 1:'Průša']
  */
 #define LCD_INFO_SCREEN_STYLE 0
 
@@ -1731,7 +1723,6 @@
  *
  * SD Card support is disabled by default. If your controller has an SD slot,
  * you must uncomment the following option or it won't work.
- *
  */
 #define SDSUPPORT
 
@@ -1968,6 +1959,14 @@
 //
 //#define FF_INTERFACEBOARD
 
+//
+// TFT GLCD Panel with Marlin UI
+// Panel connected to main board by SPI or I2C interface.
+// See https://github.com/Serhiy-K/TFTGLCDAdapter
+//
+//#define TFTGLCD_PANEL_SPI
+//#define TFTGLCD_PANEL_I2C
+
 //=============================================================================
 //=======================   LCD / Controller Selection  =======================
 //=========================      (Graphical LCDs)      ========================
@@ -2124,13 +2123,20 @@
 //#define OLED_PANEL_TINYBOY2
 
 //
-// MKS OLED 1.3" 128 × 64 FULL GRAPHICS CONTROLLER
-// http://reprap.org/wiki/MKS_12864OLED
+// MKS OLED 1.3" 128×64 FULL GRAPHICS CONTROLLER
+// https://reprap.org/wiki/MKS_12864OLED
 //
 // Tiny, but very sharp OLED display
 //
 //#define MKS_12864OLED          // Uses the SH1106 controller (default)
 //#define MKS_12864OLED_SSD1306  // Uses the SSD1306 controller
+
+//
+// Zonestar OLED 128×64 FULL GRAPHICS CONTROLLER
+//
+//#define ZONESTAR_12864LCD           // Graphical (DOGM) with ST7920 controller
+//#define ZONESTAR_12864OLED          // 1.3" OLED with SH1106 controller (default)
+//#define ZONESTAR_12864OLED_SSD1306  // 0.96" OLED with SSD1306 controller
 
 //
 // Einstart S OLED SSD1306
@@ -2143,7 +2149,7 @@
 //#define OVERLORD_OLED
 
 //
-// FYSETC OLED 2.42" 128 × 64 FULL GRAPHICS CONTROLLER with WS2812 RGB
+// FYSETC OLED 2.42" 128×64 FULL GRAPHICS CONTROLLER with WS2812 RGB
 // Where to find : https://www.aliexpress.com/item/4000345255731.html
 //#define FYSETC_242_OLED_12864   // Uses the SSD1309 controller
 
@@ -2164,12 +2170,25 @@
 // Touch-screen LCD for Malyan M200/M300 printers
 //
 //#define MALYAN_LCD
+#if ENABLED(MALYAN_LCD)
+  #define LCD_SERIAL_PORT 1  // Default is 1 for Malyan M200
+#endif
 
 //
 // Touch UI for FTDI EVE (FT800/FT810) displays
 // See Configuration_adv.h for all configuration options.
 //
 //#define TOUCH_UI_FTDI_EVE
+
+//
+// Touch-screen LCD for Anycubic printers
+//
+//#define ANYCUBIC_LCD_I3MEGA
+//#define ANYCUBIC_LCD_CHIRON
+#if EITHER(ANYCUBIC_LCD_I3MEGA, ANYCUBIC_LCD_CHIRON)
+  #define LCD_SERIAL_PORT 3  // Default is 3 for Anycubic
+  //#define ANYCUBIC_LCD_DEBUG
+#endif
 
 //
 // Third-party or vendor-customized controller interfaces.
@@ -2185,43 +2204,47 @@
 //=============================== Graphical TFTs ==============================
 //=============================================================================
 
-//
-// TFT display with optional touch screen
-// Color Marlin UI with standard menu system
-//
-//#define TFT_320x240
-//#define TFT_320x240_SPI
-//#define TFT_480x320
-//#define TFT_480x320_SPI
+/**
+ * TFT Type - Select your Display type
+ *
+ * Available options are:
+ *   MKS_TS35_V2_0,
+ *   MKS_ROBIN_TFT24, MKS_ROBIN_TFT28, MKS_ROBIN_TFT32, MKS_ROBIN_TFT35,
+ *   MKS_ROBIN_TFT43, MKS_ROBIN_TFT_V1_1R
+ *   TFT_TRONXY_X5SA, ANYCUBIC_TFT35, LONGER_LK_TFT28
+ *   TFT_GENERIC
+ *
+ * For TFT_GENERIC, you need to configure these 3 options:
+ *   Driver:     TFT_DRIVER
+ *               Current Drivers are: AUTO, ST7735, ST7789, ST7796, R61505, ILI9328, ILI9341, ILI9488
+ *   Resolution: TFT_WIDTH and TFT_HEIGHT
+ *   Interface:  TFT_INTERFACE_FSMC or TFT_INTERFACE_SPI
+ */
+//#define TFT_GENERIC
 
-//
-// Skip autodetect and force specific TFT driver
-// Mandatory for SPI screens with no MISO line
-// Available drivers are: ST7735, ST7789, ST7796, R61505, ILI9328, ILI9341, ILI9488
-//
-//#define TFT_DRIVER AUTO
+/**
+ * TFT UI - User Interface Selection. Enable one of the following options:
+ *
+ *   TFT_CLASSIC_UI - Emulated DOGM - 128x64 Upscaled
+ *   TFT_COLOR_UI   - Marlin Default Menus, Touch Friendly, using full TFT capabilities
+ *   TFT_LVGL_UI    - A Modern UI using LVGL
+ *
+ *   For LVGL_UI also copy the 'assets' folder from the build directory to the
+ *   root of your SD card, together with the compiled firmware.
+ */
+//#define TFT_CLASSIC_UI
+//#define TFT_COLOR_UI
+//#define TFT_LVGL_UI
 
-//
-// SPI display (MKS Robin Nano V2.0, MKS Gen L V2.0)
-// Upscaled 128x64 Marlin UI
-//
-//#define SPI_GRAPHICAL_TFT
-
-//
-// FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
-// Upscaled 128x64 Marlin UI
-//
-//#define FSMC_GRAPHICAL_TFT
-
-//
-// TFT LVGL UI
-//
-// Using default MKS icons and fonts from: https://git.io/JJvzK
-// Just copy the 'assets' folder from the build directory to the
-// root of your SD card, together with the compiled firmware.
-//
-//#define TFT_LVGL_UI_FSMC  // Robin nano v1.2 uses FSMC
-//#define TFT_LVGL_UI_SPI   // Robin nano v2.0 uses SPI
+/**
+ * TFT Rotation. Set to one of the following values:
+ *
+ *   TFT_ROTATE_90,  TFT_ROTATE_90_MIRROR_X,  TFT_ROTATE_90_MIRROR_Y,
+ *   TFT_ROTATE_180, TFT_ROTATE_180_MIRROR_X, TFT_ROTATE_180_MIRROR_Y,
+ *   TFT_ROTATE_270, TFT_ROTATE_270_MIRROR_X, TFT_ROTATE_270_MIRROR_Y,
+ *   TFT_MIRROR_X, TFT_MIRROR_Y, TFT_NO_ROTATION
+ */
+//#define TFT_ROTATION TFT_NO_ROTATION
 
 //=============================================================================
 //============================  Other Controllers  ============================
@@ -2235,20 +2258,22 @@
 //
 // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
 //
-//#define TOUCH_BUTTONS
-#if ENABLED(TOUCH_BUTTONS)
+//#define TOUCH_SCREEN
+#if ENABLED(TOUCH_SCREEN)
   #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
   #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
 
-  #define XPT2046_X_CALIBRATION   12316
-  #define XPT2046_Y_CALIBRATION  -8981
-  #define XPT2046_X_OFFSET       -43
-  #define XPT2046_Y_OFFSET        257
+  #define TOUCH_SCREEN_CALIBRATION
+
+  //#define XPT2046_X_CALIBRATION 12316
+  //#define XPT2046_Y_CALIBRATION -8981
+  //#define XPT2046_X_OFFSET        -43
+  //#define XPT2046_Y_OFFSET        257
 #endif
 
 //
 // RepRapWorld REPRAPWORLD_KEYPAD v1.1
-// http://reprapworld.com/?products_details&products_id=202&cPath=1591_1626
+// https://reprapworld.com/products/electronics/ramps/keypad_v1_0_fully_assembled/
 //
 //#define REPRAPWORLD_KEYPAD
 //#define REPRAPWORLD_KEYPAD_MOVE_STEP 10.0 // (mm) Distance to move per key-press
@@ -2289,9 +2314,6 @@
 // then the BLUE led is on. Otherwise the RED led is on. (1C hysteresis)
 //#define TEMP_STAT_LEDS
 
-// SkeinForge sends the wrong arc g-codes when using Arc Point as fillet procedure
-//#define SF_ARC_FIX
-
 // Support for the BariCUDA Paste Extruder
 //#define BARICUDA
 
@@ -2313,18 +2335,17 @@
  * Adds the M150 command to set the LED (or LED strip) color.
  * If pins are PWM capable (e.g., 4, 5, 6, 11) then a range of
  * luminance values can be set from 0 to 255.
- * For Neopixel LED an overall brightness parameter is also available.
+ * For NeoPixel LED an overall brightness parameter is also available.
  *
  * *** CAUTION ***
  *  LED Strips require a MOSFET Chip between PWM lines and LEDs,
  *  as the Arduino cannot handle the current the LEDs will require.
  *  Failure to follow this precaution can destroy your Arduino!
- *  NOTE: A separate 5V power supply is required! The Neopixel LED needs
+ *  NOTE: A separate 5V power supply is required! The NeoPixel LED needs
  *  more current than the Arduino 5V linear regulator can produce.
  * *** CAUTION ***
  *
  * LED Type. Enable only one of the following two options.
- *
  */
 //#define RGB_LED
 //#define RGBW_LED
@@ -2348,7 +2369,17 @@
   #define NEOPIXEL_BRIGHTNESS 127  // Initial brightness (0-255)
   //#define NEOPIXEL_STARTUP_TEST  // Cycle through colors at startup
 
-  // Use a single Neopixel LED for static (background) lighting
+  // Support for second Adafruit NeoPixel LED driver controlled with M150 S1 ...
+  //#define NEOPIXEL2_SEPARATE
+  #if ENABLED(NEOPIXEL2_SEPARATE)
+    #define NEOPIXEL2_PIXELS      15  // Number of LEDs in the second strip
+    #define NEOPIXEL2_BRIGHTNESS 127  // Initial brightness (0-255)
+    #define NEOPIXEL2_STARTUP_TEST    // Cycle through colors at startup
+  #else
+    //#define NEOPIXEL2_INSERIES      // Default behavior is NeoPixel 2 in parallel
+  #endif
+
+  // Use a single NeoPixel LED for static (background) lighting
   //#define NEOPIXEL_BKGD_LED_INDEX  0               // Index of the LED to use
   //#define NEOPIXEL_BKGD_COLOR { 255, 255, 255, 0 } // R, G, B, W
 #endif
@@ -2369,16 +2400,11 @@
 #endif
 
 /**
- * R/C SERVO support
- * Sponsored by TrinityLabs, Reworked by codexmas
- */
-
-/**
  * Number of servos
  *
  * For some servo-related options NUM_SERVOS will be set automatically.
  * Set this manually if there are extra servos needing manual control.
- * Leave undefined or set to 0 to entirely disable the servo subsystem.
+ * Set to 0 to turn off servo support.
  */
 //#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
 
@@ -2390,5 +2416,5 @@
 // Only power servos during movement, otherwise leave off to prevent jitter
 //#define DEACTIVATE_SERVOS_AFTER_MOVE
 
-// Allow servo angle to be edited and saved to EEPROM
+// Edit servo angles with M281 and save to EEPROM with M500
 //#define EDITABLE_SERVO_ANGLES
