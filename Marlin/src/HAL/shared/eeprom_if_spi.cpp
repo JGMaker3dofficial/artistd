@@ -68,28 +68,6 @@ uint8_t eeprom_read_byte(uint8_t* pos) {
   #endif
 }
 
-void eeprom_read_block(void* dest, const void* eeprom_address, size_t n) {
-  #if 1
-  W25QXX.SPI_FLASH_BufferRead((uint8_t *)dest,*((uint32_t *)eeprom_address),n);
-  #else
-  uint8_t eeprom_temp[3];
-
-  // set read location
-  // begin transmission from device
-  eeprom_temp[0] = CMD_READ;
-  eeprom_temp[1] = ((unsigned)eeprom_address>>8) & 0xFF; // addr High
-  eeprom_temp[2] = (unsigned)eeprom_address& 0xFF;       // addr Low
-  WRITE(SPI_EEPROM1_CS, HIGH);
-  WRITE(SPI_EEPROM1_CS, LOW);
-  spiSend(SPI_CHAN_EEPROM1, eeprom_temp, 3);
-
-  uint8_t *p_dest = (uint8_t *)dest;
-  while (n--)
-    *p_dest++ = spiRec(SPI_CHAN_EEPROM1);
-  WRITE(SPI_EEPROM1_CS, HIGH);
-  #endif
-}
-
 void eeprom_write_byte(uint8_t* pos, uint8_t value) {
   #if 1
   W25QXX.SPI_FLASH_BufferWrite((uint8_t *)&value,(uint32_t)pos,1);
@@ -113,32 +91,6 @@ void eeprom_write_byte(uint8_t* pos, uint8_t value) {
   spiSend(SPI_CHAN_EEPROM1, value);
   WRITE(SPI_EEPROM1_CS, HIGH);
   delay(EEPROM_WRITE_DELAY);   // wait for page write to complete
-  #endif
-}
-
-void eeprom_update_block(const void* src, void* eeprom_address, size_t n) {
-  #if 1
-  W25QXX.SPI_FLASH_BufferWrite((uint8_t *)src,*((uint32_t *)eeprom_address),n);
-  #else
-  uint8_t eeprom_temp[3];
-
-  /*write enable*/
-  eeprom_temp[0] = CMD_WREN;
-  WRITE(SPI_EEPROM1_CS, LOW);
-  spiSend(SPI_CHAN_EEPROM1, eeprom_temp, 1);
-  WRITE(SPI_EEPROM1_CS, HIGH);
-  delay(1);
-
-  /*write addr*/
-  eeprom_temp[0] = CMD_WRITE;
-  eeprom_temp[1] = ((unsigned)eeprom_address>>8) & 0xFF;  //addr High
-  eeprom_temp[2] = (unsigned)eeprom_address & 0xFF;       //addr Low
-  WRITE(SPI_EEPROM1_CS, LOW);
-  spiSend(SPI_CHAN_EEPROM1, eeprom_temp, 3);
-
-  spiSend(SPI_CHAN_EEPROM1, (const uint8_t*)src, n);
-  WRITE(SPI_EEPROM1_CS, HIGH);
-  delay(7);   // wait for page write to complete
   #endif
 }
 

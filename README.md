@@ -8,6 +8,7 @@
 
 ## Pre-Release of Official Firmware
 These are pre-releases driven by the community in conjunction with JGMaker.  Beta Releases are not officially supported; yet. 
+* [v2021.4-beta](https://github.com/JGMaker3dofficial/artistd/releases/tag/v2021.4-beta) - [Download v2021.4-beta] (https://github.com/JGMaker3dofficial/artistd/releases/download/v2021.4-beta/Robin_pro.bin)
 * [v2021.3-2.0.6-beta](https://github.com/JGMaker3dofficial/artistd/releases/tag/v2021.3-beta) - [Download v2021.3-2.0.6] (https://github.com/JGMaker3dofficial/artistd/releases/download/v2021.3-beta/Robin_pro.bin)
 * [v1.1.5-beta](https://github.com/JGMaker3dofficial/artistd/releases/tag/v1.1.5-beta) - [Download v1.1.5-beta](https://github.com/JGMaker3dofficial/artistd/releases/download/v1.1.5-beta/Robin_pro.bin)
 * [v1.1.4-beta](https://github.com/JGMaker3dofficial/artistd/releases/tag/v1.1.4-beta)
