@@ -3246,10 +3246,10 @@
 
   // Utility for calibrating e-steps for E0 (user sees E1)
 
-  #define USER_DESC_2 "E-Steps Calibration E1"
+  #define USER_DESC_2 "E1 Step Cal"
   #define USER_GCODE_2 "G28 O\nM605 S1\nT0\nM109 S210\nG0 X155 Y155 Z50\nM83\nG1 F50\nG1 E100\nM104 S0"
 
-  #define USER_DESC_3 "E-Steps Calibration E2"
+  #define USER_DESC_3 "E2 Step Cal"
   #define USER_GCODE_3 "G28 O\nM605 S1\nT1\nM109 S210\nG0 X155 Y155 Z50\nM83\nG1 F50\nG1 E100\nM104 S0"
 
   // #define USER_DESC_4 "Heat Bed/Home/Level"
