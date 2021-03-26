@@ -622,7 +622,7 @@
 #if ENABLED(DUAL_X_CARRIAGE)
   #define X1_MIN_POS X_MIN_POS     // Set to X_MIN_POS
   #define X1_MAX_POS X_BED_SIZE-5  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
-  #define X2_MIN_POS    5          // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage  /JGMaker 5mm 
+  #define X2_MIN_POS    5          // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage  /JGMaker 5mm
   #define X2_MAX_POS   370         // Set this to the distance between toolheads when both heads are homed  手工测 284   增加上层向左偏移，减小向右  新机实测两喷头间距离为435mm
   #define X2_HOME_DIR    1         // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define X2_HOME_POS X2_MAX_POS   // Default X2 home position. Set to X2_MAX_POS.
@@ -846,7 +846,7 @@
 // If the Nozzle or Bed falls when the Z stepper is disabled, set its resting position here.
 //#define Z_AFTER_DEACTIVATE Z_HOME_POS
 
-//#define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
+#define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
 
 // Default Minimum Feedrates for printing and travel moves
 #define DEFAULT_MINIMUMFEEDRATE       0.0     // (mm/s) Minimum feedrate. Set with M205 S.
