@@ -3223,27 +3223,40 @@
 /**
  * User-defined menu items that execute custom GCode
  */
-//#define CUSTOM_USER_MENUS
+#define CUSTOM_USER_MENUS
 #if ENABLED(CUSTOM_USER_MENUS)
-  //#define CUSTOM_USER_MENU_TITLE "Custom Commands"
-  #define USER_SCRIPT_DONE "M117 User Script Done"
+  #define CUSTOM_USER_MENU_TITLE "JGMaker Commands"
+  #define USER_SCRIPT_DONE "Operation Complete!"
   #define USER_SCRIPT_AUDIBLE_FEEDBACK
   //#define USER_SCRIPT_RETURN  // Return to status screen after a script
 
-  #define USER_DESC_1 "Home & UBL Info"
-  #define USER_GCODE_1 "G28\nG29 W"
+  /**
+   * Used for z-limit adjustment.
+   * 1. Home all axis if necessary (O)
+   * 2. Home only the z-axis every time
+   * 3. Raises 5mm
+   * 4. Go to the center of the bed
+   * 5. Come down to 0 on the z-axis
+   * When used back-to-back the homing is skipped for X and Y.
+   * The z-axis will always home so that the adjustment will take effect.
+   * The nozzle should just raise once for the homing and then 5mm up and back down.
+   */
+  #define USER_DESC_1 "Z-Limit Adjustment"
+  #define USER_GCODE_1 "G28 O\nG28 Z\nG0 Z5\nG0 X155 Y155\nG0 Z0"
 
-  #define USER_DESC_2 "Preheat for " PREHEAT_1_LABEL
-  #define USER_GCODE_2 "M140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND)
+  // Utility for calibrating e-steps for E0 (user sees E1)
 
-  #define USER_DESC_3 "Preheat for " PREHEAT_2_LABEL
-  #define USER_GCODE_3 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_2_TEMP_HOTEND)
+  #define USER_DESC_2 "E1 Step Cal"
+  #define USER_GCODE_2 "G28 O\nM605 S1\nT0\nM109 S210\nG0 X155 Y155 Z50\nM83\nG1 F50\nG1 E100\nM104 S0"
 
-  #define USER_DESC_4 "Heat Bed/Home/Level"
-  #define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
+  #define USER_DESC_3 "E2 Step Cal"
+  #define USER_GCODE_3 "G28 O\nM605 S1\nT1\nM109 S210\nG0 X155 Y155 Z50\nM83\nG1 F50\nG1 E100\nM104 S0"
 
-  #define USER_DESC_5 "Home & Info"
-  #define USER_GCODE_5 "G28\nM503"
+  // #define USER_DESC_4 "Heat Bed/Home/Level"
+  // #define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
+
+  // #define USER_DESC_5 "Home & Info"
+  // #define USER_GCODE_5 "G28\nM503"
 #endif
 
 /**
