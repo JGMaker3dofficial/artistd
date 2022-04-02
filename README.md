@@ -1,7 +1,9 @@
 # Firmware For JGMaker Artist-D
-![GitHub](https://img.shields.io/github/license/JGMaker3dofficial/artistd.svg)
-![GitHub contributors](https://img.shields.io/github/contributors/JGMaker3dofficial/artistd.svg)
-![GitHub Release Date](https://img.shields.io/github/release-date/JGMaker3dofficial/artistd.svg)
+This firmware is no longer supported by the community.  
+
+Please use the Twinkie Fork.   
+Artist-D Pro [https://github.com/TwinkieXLII/ArtistD-Pro](https://github.com/TwinkieXLII/ArtistD-Pro)
+Artist-D Standard [https://github.com/TwinkieXLII/artistd](https://github.com/TwinkieXLII/artistd)
 
 ## Official Firmware 
 * Get the inital release of the Official Firmware: https://github.com/JGMaker3dofficial/artistd/releases/tag/1.1.2
